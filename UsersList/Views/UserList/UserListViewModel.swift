@@ -10,6 +10,7 @@ import SwiftUICore
 @MainActor
 class UserListViewModel: ObservableObject {
     @Published var users: [User] = []
+    @Published var supportText: Support?
     @Published var error: (hasError: Bool, body: APIError?) = (false, nil)
     @Published var listEnded = false
     @Published var currentPage = 1
@@ -34,6 +35,7 @@ class UserListViewModel: ObservableObject {
             } else {
                 withAnimation { users.append(contentsOf: response.data) }
             }
+            supportText = response.support
         } catch let apiError as APIError {
             error = (true,apiError)
         } catch {

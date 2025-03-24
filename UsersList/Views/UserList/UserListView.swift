@@ -22,6 +22,7 @@ struct UserListView: View {
                 List {
                     ForEach(viewModel.users) { user in
                         NavigationLink(destination: UserDetailView(user: user,
+                                                                   support: viewModel.supportText,
                                                                    isFavorite: false, // TODO: handle favorite
                                                                    onToggleFavorite: { } // TODO: handle favorite
                                                                   )) {
