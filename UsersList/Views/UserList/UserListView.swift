@@ -32,24 +32,24 @@ struct UserListView: View {
                                 onToggleFavorite: { } // TODO: handle favorite
                             )
                         }
+                                                                  .onAppear {
+                                                                      Task { await viewModel.loadNextPageIfNeeded(user: user) }
+                                                                  }
                     }
-                    if viewModel.listEnded {
+                    if !viewModel.hasMorePages {
                         Text("More user in future")
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else if viewModel.error.body == .connectionError {
                         Text("Check your internet connection and refresh screen")
                             .frame(maxWidth: .infinity, alignment: .center)
-                    }else {
+                    } else {
                         HStack {
                             Spacer()
                             ProgressView("Loading users...")
+                                .foregroundStyle(.secondary)
                                 .progressViewStyle(CircularProgressViewStyle())
                                 .padding()
                             Spacer()
-                        }
-                        .onAppear {
-                            viewModel.currentPage += 1
-                            Task { await viewModel.loadUsers() }
                         }
                     }
                 }

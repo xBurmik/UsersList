@@ -12,34 +12,47 @@ class UserListViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var supportText: Support?
     @Published var error: (hasError: Bool, body: APIError?) = (false, nil)
-    @Published var listEnded = false
     @Published var currentPage = 1
+    @Published var isLoading = false
+    @Published var hasMorePages = true
     
     private let apiService = APIService()
     
     func loadInitialData() async {
         currentPage = 1
-        listEnded = false
-        withAnimation { users = [] }
+        users = []
+        hasMorePages = true
         await loadUsers()
+    }
+    
+    
+    func loadNextPageIfNeeded(user: User) async {
+        guard !isLoading, hasMorePages else { return }
+        
+        let thresholdIndex = users.index(users.endIndex, offsetBy: -3)
+        if users.firstIndex(where: { $0.id == user.id }) == thresholdIndex {
+            currentPage += 1
+            await loadUsers()
+        }
     }
     
     func loadUsers() async {
         if currentPage == 1 { users = [] }
+        isLoading = true
         error = (false,nil)
         
         do {
             let response = try await apiService.getUsers(page: currentPage)
-            if response.data.isEmpty {
-                listEnded = true
-            } else {
-                withAnimation { users.append(contentsOf: response.data) }
-            }
+            withAnimation { users.append(contentsOf: response.data) }
+            hasMorePages = currentPage < response.totalPages
+            isLoading = false
             supportText = response.support
         } catch let apiError as APIError {
             error = (true,apiError)
+            isLoading = false
         } catch {
             self.error = (true, APIError.unknown(error))
+            isLoading = false
         }
     }
     
