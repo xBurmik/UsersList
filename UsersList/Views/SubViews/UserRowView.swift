@@ -9,8 +9,8 @@ import SwiftUI
 
 struct UserRowView: View {
     let user: User
-    let isFavorite: Bool // TODO: handle favorite
-    let onToggleFavorite: () -> Void // TODO: handle favorite
+    let isFavorite: Bool 
+    let onToggleFavorite: () -> Void
     
     var body: some View {
         HStack(spacing: 16) {
@@ -51,6 +51,7 @@ struct UserRowView: View {
                 Image(systemName: isFavorite ? "star.fill" : "star")
                     .foregroundColor(isFavorite ? .yellow : .gray)
             }
+            .buttonStyle(.plain)
         }
         .padding(.vertical, 8)
     }

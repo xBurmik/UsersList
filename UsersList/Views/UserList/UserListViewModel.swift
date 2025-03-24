@@ -17,14 +17,17 @@ class UserListViewModel: ObservableObject {
     @Published var hasMorePages = true
     
     private let apiService = APIService()
-    
+    private let favoritesService = FavoritesService()
+}
+
+//MARK: API methods
+extension UserListViewModel {
     func loadInitialData() async {
         currentPage = 1
         users = []
         hasMorePages = true
         await loadUsers()
     }
-    
     
     func loadNextPageIfNeeded(user: User) async {
         guard !isLoading, hasMorePages else { return }
@@ -55,5 +58,17 @@ class UserListViewModel: ObservableObject {
             isLoading = false
         }
     }
-    
 }
+
+//MARK: Favorites user Methods
+extension UserListViewModel {
+    func toggleFavorite(user: User) {
+        favoritesService.toggleFavorite(user: user)
+        objectWillChange.send()
+    }
+    
+    func isFavorite(userId: Int) -> Bool {
+        return favoritesService.isFavorite(userId: userId)
+    }
+}
+

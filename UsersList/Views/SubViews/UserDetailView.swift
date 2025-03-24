@@ -11,8 +11,8 @@ import SwiftUI
 struct UserDetailView: View {
     let user: User
     let support: Support?
-    let isFavorite: Bool //TODO: handle favorite
-    let onToggleFavorite: () -> Void // TODO: handle favorite
+    let isFavorite: Bool
+    let onToggleFavorite: () -> Void 
     
     var body: some View {
         ScrollView {

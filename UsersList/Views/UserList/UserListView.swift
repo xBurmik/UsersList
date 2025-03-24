@@ -23,13 +23,13 @@ struct UserListView: View {
                     ForEach(viewModel.users) { user in
                         NavigationLink(destination: UserDetailView(user: user,
                                                                    support: viewModel.supportText,
-                                                                   isFavorite: false, // TODO: handle favorite
-                                                                   onToggleFavorite: { } // TODO: handle favorite
+                                                                   isFavorite: viewModel.isFavorite(userId: user.id),
+                                                                   onToggleFavorite: { viewModel.toggleFavorite(user: user) }
                                                                   )) {
                             UserRowView(
                                 user: user,
-                                isFavorite: false, // TODO: handle favorite
-                                onToggleFavorite: { } // TODO: handle favorite
+                                isFavorite: viewModel.isFavorite(userId: user.id),
+                                onToggleFavorite: { viewModel.toggleFavorite(user: user) }
                             )
                         }
                                                                   .onAppear {
