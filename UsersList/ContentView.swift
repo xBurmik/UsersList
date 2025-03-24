@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selection: ScreenState = .usersList
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView(selection: $selection) {
+            UserListView()
+                .tabItem {
+                    Label("Users", systemImage: "person.3")
+                }
+            
+            FavoritesView()
+                .tabItem {
+                    Label("Favorites", systemImage: "star.fill")
+                }
         }
         .padding()
+    }
+    
+    enum ScreenState {
+        case usersList
+        case favoritesList
     }
 }
 
