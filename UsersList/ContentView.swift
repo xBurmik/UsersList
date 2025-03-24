@@ -16,13 +16,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("Users", systemImage: "person.3")
                 }
-            
+                .tag(ScreenState.usersList)
             FavoritesView()
                 .tabItem {
                     Label("Favorites", systemImage: "star.fill")
                 }
+                .tag(ScreenState.favoritesList)
         }
-        .padding()
     }
     
     enum ScreenState {
