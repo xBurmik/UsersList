@@ -21,8 +21,16 @@ struct UserListView: View {
             ZStack {
                 List {
                     ForEach(viewModel.users) { user in
-                        Text(user.fullName)
-                            .frame(height: 150)
+                        NavigationLink(destination: UserDetailView(user: user,
+                                                                   isFavorite: false, // TODO: handle favorite
+                                                                   onToggleFavorite: { } // TODO: handle favorite
+                                                                  )) {
+                            UserRowView(
+                                user: user,
+                                isFavorite: false, // TODO: handle favorite
+                                onToggleFavorite: { } // TODO: handle favorite
+                            )
+                        }
                     }
                     if viewModel.listEnded {
                         Text("More user in future")
